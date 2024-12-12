@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterJugChallenge", "WaterJugChallenge\WaterJugChallenge.csproj", "{03C6C477-0F25-4B51-925A-A689E8EAB85E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterJugChallenge", "WaterJugChallenge\WaterJugChallenge.csproj", "{03C6C477-0F25-4B51-925A-A689E8EAB85E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppModels", "AppModels\AppModels.csproj", "{16E135D7-CD45-431B-BB45-42ED3F6AF77B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{03C6C477-0F25-4B51-925A-A689E8EAB85E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03C6C477-0F25-4B51-925A-A689E8EAB85E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03C6C477-0F25-4B51-925A-A689E8EAB85E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16E135D7-CD45-431B-BB45-42ED3F6AF77B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16E135D7-CD45-431B-BB45-42ED3F6AF77B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16E135D7-CD45-431B-BB45-42ED3F6AF77B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16E135D7-CD45-431B-BB45-42ED3F6AF77B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

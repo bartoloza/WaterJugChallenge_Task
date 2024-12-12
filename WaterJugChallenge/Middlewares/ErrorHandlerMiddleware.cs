@@ -1,5 +1,4 @@
-﻿using AppModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
@@ -60,19 +59,14 @@ namespace WebApi.Middlewares
             // Customize ProblemDetails based on the exception type
             switch (error)
             {
-                case AppException appEx:
+                case ArgumentNullException _:
+                case ArgumentException _:
+                case FormatException _:
                     problemDetails.Status = (int)HttpStatusCode.BadRequest;
-                    problemDetails.Title = "Bad Request";
-                    problemDetails.Detail = appEx.Message;
+                    problemDetails.Title = "Invalid Parameters";
+                    problemDetails.Detail = "One or more required parameters are missing or invalid.";
                     break;
-                case KeyNotFoundException _:
-                    problemDetails.Status = (int)HttpStatusCode.NotFound;
-                    problemDetails.Title = "Resource Not Found";
-                    break;
-                case UnauthorizedAccessException _:
-                    problemDetails.Status = (int)HttpStatusCode.Unauthorized;
-                    problemDetails.Title = "Unauthorized";
-                    break;
+
                 default:
                     problemDetails.Status = (int)HttpStatusCode.InternalServerError;
                     break;
