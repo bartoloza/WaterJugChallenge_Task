@@ -31,7 +31,7 @@ namespace WaterJugChallenge.Services
                 throw new AppException("No Solution");
             }
 
-            if (zAmountWanted % GCD(xCapacity, yCapacity) != 0)
+            if (zAmountWanted % CalcualteGreatestCommonDivisor(xCapacity, yCapacity) != 0)
             {
                 throw new AppException("No Solution");
             }
@@ -118,9 +118,8 @@ namespace WaterJugChallenge.Services
             steps.Reverse(); // Reverse the list to get the correct order of actions
         }
 
-        private int GCD(int a, int b)
+        private int CalcualteGreatestCommonDivisor(int a, int b)
         {
-            // Calculate the Greatest Common Divisor (GCD) of two numbers
             while (b != 0)
             {
                 var temp = b;
