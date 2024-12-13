@@ -9,12 +9,10 @@ namespace WaterJugChallenge.Controllers
     public class WaterJugRiddleController : ControllerBase
     {
         private readonly IWaterJugRiddleService _service;
-        private readonly ILogger _logger;
 
-        public WaterJugRiddleController(IWaterJugRiddleService service, ILogger<WaterJugRiddleController> logger)
+        public WaterJugRiddleController(IWaterJugRiddleService service)
         {
             _service = service;
-            _logger = logger;
         }
 
         // GET api/waterjugriddle/2/10/4
@@ -22,7 +20,6 @@ namespace WaterJugChallenge.Controllers
         public IActionResult GetFromUrl(int xCapacity, int yCapacity, int zAmountWanted)
         {
             var result = _service.SolveWaterJugProblem(xCapacity, yCapacity, zAmountWanted);
-            _logger.LogInformation("WATER JUG RIDDLE URL: " + result.ToString());
             return Ok(result);
         }
 
@@ -31,7 +28,6 @@ namespace WaterJugChallenge.Controllers
         public IActionResult GetFromBody([FromBody] WaterJugRequest request)
         {
             var result = _service.SolveWaterJugProblem(request.XCapacity, request.YCapacity, request.ZAmountWanted);
-            _logger.LogInformation("WATER JUG RIDDLE BODY: " + result.ToString());
             return Ok(result);
         }
     }

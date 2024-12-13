@@ -49,6 +49,7 @@ if (app.Environment.IsDevelopment())
 
 // Add custom error handling middleware
 app.UseMiddleware<ErrorHandlerMiddleware>();
+app.UseMiddleware<LoggingMiddleware>();
 
 // Map controllers
 app.MapControllers();

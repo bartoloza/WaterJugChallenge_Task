@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AppModels;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
@@ -7,12 +8,10 @@ namespace WebApi.Middlewares
     public class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger _logger;
 
-        public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger)
+        public ErrorHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -29,12 +28,8 @@ namespace WebApi.Middlewares
                 response.ContentType = "application/json";
 
                 var problemDetails = CreateProblemDetails(ex, context.Request.Path, traceId);
-
                 response.StatusCode = problemDetails.Status ?? (int)HttpStatusCode.InternalServerError;
 
-                _logger.LogError(ex, "Error occurred while processing the request: {TraceId}", traceId);
-
-                // Return the ProblemDetails response
                 var result = JsonSerializer.Serialize(problemDetails);
                 await response.WriteAsync(result);
             }
@@ -42,7 +37,6 @@ namespace WebApi.Middlewares
 
         private ProblemDetails CreateProblemDetails(Exception error, string requestPath, string traceId)
         {
-            // Create a ProblemDetails object with default values
             var problemDetails = new ProblemDetails
             {
                 Type = "https://httpstatuses.com/" + (int)HttpStatusCode.InternalServerError,
@@ -56,7 +50,6 @@ namespace WebApi.Middlewares
                 }
             };
 
-            // Customize ProblemDetails based on the exception type
             switch (error)
             {
                 case ArgumentNullException _:
@@ -65,6 +58,11 @@ namespace WebApi.Middlewares
                     problemDetails.Status = (int)HttpStatusCode.BadRequest;
                     problemDetails.Title = "Invalid Parameters";
                     problemDetails.Detail = "One or more required parameters are missing or invalid.";
+                    break;
+                case AppException e:
+                    // custom application error
+                    problemDetails.Status = (int)HttpStatusCode.BadRequest;
+                    problemDetails.Title = "No Solution";
                     break;
 
                 default:

@@ -28,12 +28,12 @@ namespace WaterJugChallenge.Services
             // Step 1: Check if the problem is solvable
             if (zAmountWanted > xCapacity && zAmountWanted > yCapacity)
             {
-                throw new InvalidOperationException("The desired amount is larger than both jug capacities.");
+                throw new AppException("No Solution");
             }
 
             if (zAmountWanted % GCD(xCapacity, yCapacity) != 0)
             {
-                throw new InvalidOperationException("The desired amount cannot be measured using these two jugs.");
+                throw new AppException("No Solution");
             }
 
             // Step 2: Initialize BFS
