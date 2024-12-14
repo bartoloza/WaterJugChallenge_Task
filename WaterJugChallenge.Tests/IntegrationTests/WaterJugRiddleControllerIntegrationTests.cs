@@ -1,6 +1,8 @@
 ﻿using AppModels;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
+using System.Net;
 using System.Text;
 using Xunit;
 
@@ -30,12 +32,12 @@ namespace WaterJugChallenge.Tests.Integration
             var response = await _client.GetAsync($"/api/waterjugriddle/{xCapacity}/{yCapacity}/{zAmountWanted}");
 
             // Assert
-            response.EnsureSuccessStatusCode(); // Status code 200-299 indicates success
+            response.IsSuccessStatusCode.Should().BeTrue(); // Checks that the response status code is between 200-299
             var content = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<SolutionResponse>(content);
 
-            Assert.NotNull(result);
-            Assert.Equal(6, result.Solution.Count); // We expect 3 steps in the solution
+            result.Should().NotBeNull();
+            result.Solution.Should().HaveCount(6); // We expect 6 steps in the solution
         }
 
         // Test for the POST endpoint
@@ -57,12 +59,12 @@ namespace WaterJugChallenge.Tests.Integration
             var response = await _client.PostAsync("/api/waterjugriddle", content);
 
             // Assert
-            response.EnsureSuccessStatusCode();  // Status code 200-299 indicates success
+            response.IsSuccessStatusCode.Should().BeTrue(); // Status code 200-299 indicates success
             var responseContent = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<SolutionResponse>(responseContent);
 
-            Assert.NotNull(result);
-            Assert.Equal(6, result.Solution.Count); // Expect 3 steps
+            result.Should().NotBeNull();
+            result.Solution.Should().HaveCount(6); // Expect 6 steps in the solution
         }
 
         // Test for invalid parameters in GET
@@ -78,9 +80,9 @@ namespace WaterJugChallenge.Tests.Integration
             var response = await _client.GetAsync($"/api/waterjugriddle/{xCapacity}/{yCapacity}/{zAmountWanted}");
 
             // Assert
-            Assert.Equal(400, (int)response.StatusCode); // BadRequest status code
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest); // Check for 400 BadRequest status code
             var content = await response.Content.ReadAsStringAsync();
-            Assert.Contains("Invalid Parameters", content);
+            content.Should().Contain("Invalid Parameters");
         }
 
         // Test for missing parameters in GET
@@ -91,10 +93,13 @@ namespace WaterJugChallenge.Tests.Integration
             var xCapacity = 3;
             var yCapacity = 5;
 
+            // Act
             var response = await _client.GetAsync($"/api/waterjugriddle/{xCapacity}/{yCapacity}");
 
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound); // Should return 404 NotFound
             var content = await response.Content.ReadAsStringAsync();
-            Assert.Contains("", content);
+            content.Should().BeEmpty();
         }
     }
 }
