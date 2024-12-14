@@ -48,7 +48,8 @@ namespace WaterJugChallenge.Services
                 // If we reach the goal, we can backtrack the steps
                 if (currentState.Jug1 == zAmountWanted || currentState.Jug2 == zAmountWanted)
                 {
-                    BacktrackSteps(currentState, steps);
+                    steps = BacktrackSteps(currentState);
+
                     status = "Solved";
 
                     // Set "status" for the last step only
@@ -100,8 +101,10 @@ namespace WaterJugChallenge.Services
             queue.Enqueue(new JugState(currentState.Jug1 + transferToJug1, currentState.Jug2 - transferToJug1, currentState, currentState.StepNumber + 1, "Transfer from bucket Y to X"));
         }
 
-        private void BacktrackSteps(JugState state, List<Step> steps)
+        public List<Step> BacktrackSteps(JugState state)
         {
+            var steps = new List<Step>();
+
             // Backtrack to generate the sequence of steps
             while (state.PreviousState != null)
             {
@@ -115,10 +118,12 @@ namespace WaterJugChallenge.Services
 
                 state = state.PreviousState;
             }
+
             steps.Reverse(); // Reverse the list to get the correct order of actions
+            return steps; // Return the list of steps
         }
 
-        private int CalcualteGreatestCommonDivisor(int a, int b)
+        public int CalcualteGreatestCommonDivisor(int a, int b)
         {
             while (b != 0)
             {
